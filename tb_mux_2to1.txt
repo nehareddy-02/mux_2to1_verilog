@@ -1,0 +1,48 @@
+`timescale 1ns / 1ps
+
+module tb_mux_2to1;
+
+    // Inputs
+    reg d0;
+    reg d1;
+    reg sel;
+
+    // Outputs
+    wire y;
+
+    // Instantiate the Unit Under Test (UUT)
+    mux_2to1 uut (
+        .d0(d0), 
+        .d1(d1), 
+        .sel(sel), 
+        .y(y)
+    );
+
+    initial begin
+        // Initialize Inputs
+        d0 = 0; d1 = 0; sel = 0;
+        #10;
+        
+        // Test Case 1: Select d0 (sel = 0)
+        d0 = 0; d1 = 1; sel = 0; #10;
+        d0 = 1; d1 = 0; sel = 0; #10;
+        
+        // Test Case 2: Select d1 (sel = 1)
+        d0 = 0; d1 = 1; sel = 1; #10;
+        d0 = 1; d1 = 0; sel = 1; #10;
+        
+        // Additional toggle tests
+        d0 = 1; d1 = 1; sel = 0; #10;
+        d0 = 0; d1 = 0; sel = 1; #10;
+        
+        // End simulation
+        $finish;
+    end
+
+    // Monitor changes in signals
+    initial begin
+        $monitor("Time = %0t ns | sel = %b, d0 = %b, d1 = %b | y = %b", 
+                 $time, sel, d0, d1, y);
+    end
+
+endmodule
